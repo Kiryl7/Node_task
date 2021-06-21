@@ -1,2 +1,2 @@
 # tasks
- traine node,js task
+ traine node.js task
