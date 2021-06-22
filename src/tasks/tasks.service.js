@@ -11,7 +11,15 @@ arr = [
     }
 ]
 
-const getTasks = () => arr
+const { getAll, getById, delObjById, updateBase, saveObj } = require("./tasks.repository")
+const getTasks = async () => {
+    try {
+        return await getAll()
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}
 
 const getOne = (id) => {
     for (const obj of arr) {
@@ -26,7 +34,7 @@ const save = (obj) => {
     return obj
 }
 
-const del = (id) => {
+const del = (id) => { //delTask
     try {
         const findTask = getOne(id)
         arr.splice(arr.indexOf(findTask), 1)

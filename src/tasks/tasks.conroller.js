@@ -15,8 +15,8 @@ tasks.get('/:id', (req, res) => {
     }
 })
 
-tasks.get('/', (req, res) => {
-    const tasks = getTasks()
+tasks.get('/', async (req, res) => {
+    const tasks = await getTasks()
     if (tasks) {
         res.status(200)
         res.json(tasks)
@@ -32,7 +32,7 @@ tasks.post('/', validateBody, (req, res) => {
     res.send(obj)
 })
 
-tasks.delete('/:id', (req, res) => {
+tasks.delete('/:id', (req, res) => { //добавить красивые сообщеньки)
     try {
         const id = req.params.id
         const obj = del(parseInt(id))

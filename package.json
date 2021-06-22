@@ -4,7 +4,7 @@
     "description": "NodeJS Test App",
     "main": "app.js",
     "scripts": {
-        "dev:start": "nodemon"
+        "dev:start": "nodemon index.js"
     },
     "author": "",
     "license": "ISC",
