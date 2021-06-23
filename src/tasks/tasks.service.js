@@ -1,17 +1,5 @@
-arr = [
-    {
-        id: 0,
-        title: "#",
-        description: 'first element'
-    },
-    {
-        id: 1,
-        title: "$",
-        description: 'second element'
-    }
-]
+const { getAll, getById, delById, update, save } = require("./tasks.repository")
 
-const { getAll, getById, delObjById, update, saveObj } = require("./tasks.repository")
 const getTasks = async () => {
     try {
         return await getAll()
@@ -32,16 +20,16 @@ const getOneTask = async (id) => {
 
 const saveTask = async (task) => {
     try {
-        return await saveObj(task)
+        return await save(task)
     } catch(error) {
         console.log(error)
         throw error
     }
 }
 
-const delTask = async (id) => { //delTask
+const delTask = async (id) => {
     try {
-        return await delObjById(id)
+        return await delById(id)
     } catch (error) {
         throw error
     }

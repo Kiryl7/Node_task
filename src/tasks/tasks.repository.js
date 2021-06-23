@@ -7,7 +7,7 @@ const getAll = async () => {
         return rows
     } catch (error) {
         console.trace(error)
-        throw error
+        return null
     }
 }
 
@@ -23,7 +23,7 @@ const getById = async (id) => {
     }
 }
 
-const delObjById = async (id) => {
+const delById = async (id) => {
     const client = await pool.connect()
     let taskResult
     try {
@@ -62,7 +62,7 @@ const update = async (id, task) => {
     return taskResult    
     }
     
-const saveObj = async (task) => {
+const save = async (task) => {
     const client = await pool.connect()
     const {id, title, description} = task
     let taskResult
@@ -82,4 +82,4 @@ const saveObj = async (task) => {
     return taskResult
 }
 
-module.exports = { getAll, getById, delObjById, update, saveObj }
+module.exports = { getAll, getById, delById, update, save }
