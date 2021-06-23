@@ -40,9 +40,9 @@ tasks.post('/', validateBody, async (req, res) => {
 tasks.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id
-        await delTask(parseInt(id))
-        res.status(204)
-        res.send("Can not delete task")
+        const deletedTask = await delTask(parseInt(id))
+        res.status(200)
+        res.json(deletedTask)
     } catch (error) {
         throw new ErrorHandler(404, "This object cannot been deleted.")
     }
