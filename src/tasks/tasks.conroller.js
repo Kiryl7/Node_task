@@ -17,11 +17,11 @@ tasks.get('/:id', async (req, res) => {
 })
 
 tasks.get('/', async (req, res) => {
-    const tasks = await getTasks()
-    if (tasks) {
+    try {
+        const tasks = await getTasks()
         res.status(200)
         res.json(tasks)
-    } else {
+    } catch (error11) {
         throw new ErrorHandler(404, "Tasks not found.")
     }
 })
