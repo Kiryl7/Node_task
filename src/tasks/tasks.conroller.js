@@ -1,13 +1,13 @@
 const express = require('express')
 const validateBody = require('../helpers/validation.body')
 const tasks = express.Router()
-const { save, getOne, del, update, getTasks } = require("./tasks.service")
+const { saveTask, getOneTask, delTask, updateTask, getTasks } = require("./tasks.service")
 const { ErrorHandler, handleError } = require("../helpers/error")
 
-tasks.get('/:id', (req, res) => {
+tasks.get('/:id', async (req, res) => {
     const id = req.params.id
     try {
-        const one = getOne(parseInt(id))
+        const one = await getOneTask(parseInt(id))
         res.status(200)
         res.send(one)
     } catch (error) {
@@ -25,29 +25,33 @@ tasks.get('/', async (req, res) => {
     }
 })
 
-tasks.post('/', validateBody, (req, res) => {
+tasks.post('/', validateBody, async (req, res) => {
     const task = req.body
-    const obj = save(task)
-    res.status(201)
-    res.send(obj)
+    try {
+        const obj = await saveTask(task)
+        res.status(201)
+        res.send(obj)
+    } catch (error) {
+        throw new ErrorHandler(404, "Task does't save(")
+    }  
 })
 
-tasks.delete('/:id', (req, res) => { //добавить красивые сообщеньки)
+tasks.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id
-        const obj = del(parseInt(id))
+        await delTask(parseInt(id))
         res.status(200)
-        res.send(obj)
+        res.send("This elem has been deleted, you can't backup his.")
     } catch (error) {
         throw new ErrorHandler(404, "This object cannot been deleted.")
     }
 })
 
-tasks.patch('/:id', (req, res) => {
+tasks.patch('/:id', async (req, res) => {
     const id = req.params.id
     const task = req.body
     try {
-        const one = update(parseInt(id), task)
+        const one = await updateTask(parseInt(id), task)
         res.send(one)
     } catch (error) {
         throw new ErrorHandler(404, "Error data update")

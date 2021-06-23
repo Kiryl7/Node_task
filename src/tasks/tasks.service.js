@@ -11,7 +11,7 @@ arr = [
     }
 ]
 
-const { getAll, getById, delObjById, updateBase, saveObj } = require("./tasks.repository")
+const { getAll, getById, delObjById, update, saveObj } = require("./tasks.repository")
 const getTasks = async () => {
     try {
         return await getAll()
@@ -21,43 +21,39 @@ const getTasks = async () => {
     }
 }
 
-const getOne = (id) => {
-    for (const obj of arr) {
-        if (obj.id == id) {
-            return obj
-        }
+const getOneTask = async (id) => {
+    try {
+        return await getById(id)
+    } catch (error) {
+        console.log(error)
+        throw error
     }
 }
 
-const save = (obj) => {
-    arr.push(obj)
-    return obj
+const saveTask = async (task) => {
+    try {
+        return await saveObj(task)
+    } catch(error) {
+        console.log(error)
+        throw error
+    }
 }
 
-const del = (id) => { //delTask
+const delTask = async (id) => { //delTask
     try {
-        const findTask = getOne(id)
-        arr.splice(arr.indexOf(findTask), 1)
-        return findTask
+        return await delObjById(id)
     } catch (error) {
         throw error
     }
 }
 
-const update = (id, task) => {
+const updateTask = async (id, task) => {
     try {
-        const findTask = getOne(id)
-        if (!findTask) save(task)
-        else {
-            if (findTask.id != task.id) findTask.id = task.id
-            else if (findTask.title != task.title) findTask.title = task.title
-            else if (findTask.description != task.description) findTask.description = task.description
-        }
-        return findTask
+        return await update(id, task)
     } catch (error) {
         throw error
     }
 
 }
 
-module.exports = { getOne, save, del, update, getTasks }
+module.exports = { getOneTask, saveTask, delTask, updateTask, getTasks }

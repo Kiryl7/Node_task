@@ -3,8 +3,8 @@ const pool = require('../database')
 const getAll = async () => {
     try {
         const queryString = 'SELECT * FROM education.task'
-        const result = await pool.query(queryString)
-        return result
+        const { rows } = await pool.query(queryString)
+        return rows
     } catch (error) {
         console.trace(error)
         throw error
@@ -64,12 +64,12 @@ const update = async (id, task) => {
     
 const saveObj = async (task) => {
     const client = await pool.connect()
-    const {title, description} = task
+    const {id, title, description} = task
     let taskResult
     try {
         await client.query('BEGIN')
-        const query = `INSERT INTO education.task (title, description) VALUES ($1, $2)`,
-        taskResult = await client.query(query, [title, description])
+        const query = `INSERT INTO education.task (id, title, description) VALUES ($1, $2, $3)`,
+        taskResult = await client.query(query, [id, title, description])
         console.log(taskResult.rowCount)
         await client.query('COMMIT')
     } catch (error) {
