@@ -4,7 +4,8 @@
     "description": "NodeJS Test App",
     "main": "app.js",
     "scripts": {
-        "dev:start": "nodemon index.js"
+        "dev:start": "nodemon index.js",
+        "prettier": "prettier --write \"**/*.ts\""
     },
     "author": "",
     "license": "ISC",
@@ -14,6 +15,7 @@
         "pg": "^8.6.0"
     },
     "devDependencies": {
-        "nodemon": "^2.0.7"
+        "nodemon": "^2.0.7",
+        "prettier": "2.3.1"
     }
 }
