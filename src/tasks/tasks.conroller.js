@@ -1,56 +1,58 @@
 const express = require('express')
 const validateBody = require('../helpers/validation.body')
-const tasks = express.Router()
-const { save, getOne, del, update, getTasks } = require("./tasks.service")
-const { ErrorHandler, handleError } = require("../helpers/error")
+const { saveTask, getOneTask, delTask, updateTask, getTasks } = require("./tasks.service")
+const { ErrorHandler } = require("../helpers/error")
+const buildResponse = require("../helpers/buildResponce")
 
-tasks.get('/:id', (req, res) => {
+const tasks = express.Router()
+
+tasks.get('/:id', async (req, res) => {
     const id = req.params.id
     try {
-        const one = getOne(parseInt(id))
-        res.status(200)
-        res.send(one)
+        const task = await getOneTask(parseInt(id))
+        buildResponse(task, res)
     } catch (error) {
-        throw new ErrorHandler(404, "Error get element.")
+        throw new ErrorHandler(404, "Task not found")
     }
 })
 
-tasks.get('/', (req, res) => {
-    const tasks = getTasks()
-    if (tasks) {
-        res.status(200)
-        res.json(tasks)
-    } else {
+tasks.get('/', async (req, res) => {
+    try {
+        const tasks = await getTasks()
+        buildResponse(tasks, res)
+    } catch (error11) {
         throw new ErrorHandler(404, "Tasks not found.")
     }
 })
 
-tasks.post('/', validateBody, (req, res) => {
+tasks.post('/', validateBody, async (req, res) => {
     const task = req.body
-    const obj = save(task)
-    res.status(201)
-    res.send(obj)
+    try {
+        const savedTask = await saveTask(task)
+        buildResponse(savedTask, res)
+    } catch (error) {
+        throw new ErrorHandler(404, "Task does't save(")
+    }  
 })
 
-tasks.delete('/:id', (req, res) => {
+tasks.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id
-        const obj = del(parseInt(id))
-        res.status(200)
-        res.send(obj)
+        const deletedTask = await delTask(parseInt(id))
+        buildResponse(deletedTask, res)
     } catch (error) {
         throw new ErrorHandler(404, "This object cannot been deleted.")
     }
 })
 
-tasks.patch('/:id', (req, res) => {
+tasks.patch('/:id', async (req, res) => {
     const id = req.params.id
     const task = req.body
     try {
-        const one = update(parseInt(id), task)
-        res.send(one)
+        const updatedTask = await updateTask(parseInt(id), task)
+        buildResponse(updatedTask, res)
     } catch (error) {
-        throw new ErrorHandler(404, "Error data update")
+        throw new ErrorHandler(404, "Task can not be updated")
     }
 })
 
