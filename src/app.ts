@@ -1,8 +1,8 @@
-const express = require('express')
-const tasks = require('./tasks/tasks.conroller')
-const { ErrorHandler, handleError } = require("./helpers/error")
+import express from 'express'
+import { tasks as taskRoute } from './tasks/tasks.conroller'
+import { ErrorHandler, handleError } from "./helpers/error"
 
-const app = express()
+export const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -10,10 +10,8 @@ app.get('/error', (req, res) => {
     throw new ErrorHandler(500, 'Internal server error');
 })
 
-app.use('/tasks', tasks)
+app.use('/tasks', taskRoute)
 
 app.use((err, req, res, next) => {
     handleError(err, res)
 })
-
-module.exports =  app 
