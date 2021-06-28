@@ -4,12 +4,14 @@
     "description": "NodeJS Test App",
     "main": "app.js",
     "scripts": {
-        "dev:start": "nodemon index.js"
+        "dev:start": "nodemon index.js",
+        "lint": "eslint . --fix"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
         "dotenv": "^10.0.0",
+        "eslint": "^7.29.0",
         "express": "^4.17.1",
         "pg": "^8.6.0"
     },
