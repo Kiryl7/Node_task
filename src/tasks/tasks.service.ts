@@ -1,4 +1,4 @@
-const { getAll, getById, delById, update, save } = require("./tasks.repository")
+import { getAll, getById, delById, update, save } from "./tasks.repository"
 
 const getTasks = async () => {
     try {
@@ -9,7 +9,7 @@ const getTasks = async () => {
     }
 }
 
-const getOneTask = async (id) => {
+const getOneTask = async (id: Number) => {
     try {
         return await getById(id)
     } catch (error) {
@@ -18,7 +18,7 @@ const getOneTask = async (id) => {
     }
 }
 
-const saveTask = async (task) => {
+const saveTask = async (task: Object) => {
     try {
         return await save(task)
     } catch(error) {
@@ -27,7 +27,7 @@ const saveTask = async (task) => {
     }
 }
 
-const delTask = async (id) => {
+const delTask = async (id: Number) => {
     try {
         return await delById(id)
     } catch (error) {
@@ -35,13 +35,12 @@ const delTask = async (id) => {
     }
 }
 
-const updateTask = async (id, task) => {
+const updateTask = async (id: Number, task: Object) => {
     try {
         return await update(id, task)
     } catch (error) {
         throw error
     }
-
 }
 
-module.exports = { getOneTask, saveTask, delTask, updateTask, getTasks }
+export { getOneTask, saveTask, delTask, updateTask, getTasks }
