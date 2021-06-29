@@ -1,45 +1,58 @@
 import { getAll, getById, delById, update, save } from "./tasks.repository"
 
-const getTasks = async () => {
+interface Task {
+    id: number;
+    title: string;
+    description: string;
+}
+
+const getTasks = async (): Promise <Array<Task> | null> => {
     try {
         return await getAll()
     } catch (error) {
-        console.log(error)
-        throw error
+        if (error) {
+            return error.message
+        }
     }
 }
 
-const getOneTask = async (id: Number) => {
+const getOneTask = async (id: number): Promise<Array<Task> | null> => {
     try {
         return await getById(id)
     } catch (error) {
-        console.log(error)
-        throw error
+        if (error) {
+            return error.message
+        }
     }
 }
 
-const saveTask = async (task: Object) => {
+const saveTask = async (task: Task): Promise<Task> => {
     try {
         return await save(task)
     } catch(error) {
-        console.log(error)
-        throw error
+        if (error) {
+            return error.message
+        }
     }
 }
 
-const delTask = async (id: Number) => {
+const delTask = async (id: number): Promise<Task> => {
     try {
         return await delById(id)
     } catch (error) {
-        throw error
+        if (error) {
+            return error.message
+        }
     }
 }
 
-const updateTask = async (id: Number, task: Object) => {
+const updateTask = async (id: number, task: Task): Promise<Task> => {
     try {
         return await update(id, task)
     } catch (error) {
-        throw error
+        if (error) {
+            return error.message
+        }
     }
 }
 
