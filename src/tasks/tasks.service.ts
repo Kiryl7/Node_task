@@ -1,10 +1,5 @@
 import { getAll, getById, delById, update, save } from "./tasks.repository"
-
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-}
+import { Task } from "./tasks.repository"
 
 const getTasks = async (): Promise <Array<Task> | null> => {
     try {
