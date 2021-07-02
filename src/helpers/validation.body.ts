@@ -1,6 +1,7 @@
-const { ErrorHandler } = require("../helpers/error")
+import express from 'express'
+import { ErrorHandler } from "../helpers/error"
 
-const validateBody = (req, res, next) => {
+const validateBody = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const task = req.body
         if (!task.id || task.id == null || !task.title || task.title == null ||
             !task.description || task.description == null
@@ -8,4 +9,4 @@ const validateBody = (req, res, next) => {
     next()
 }
 
-module.exports = validateBody
+export { validateBody }
