@@ -5,7 +5,7 @@
     "main": "app.js",
     "scripts": {
         "dev:start": "nodemon",
-        "lint": "eslint . --fix"
+        "lint": "eslint . --fix",
         "prettier": "prettier --write \"**/*.ts\""
     },
     "author": "",
