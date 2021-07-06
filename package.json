@@ -6,6 +6,7 @@
     "scripts": {
         "dev:start": "nodemon",
         "lint": "eslint . --fix"
+        "prettier": "prettier --write \"**/*.ts\""
     },
     "author": "",
     "license": "ISC",
