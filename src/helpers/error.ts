@@ -1,3 +1,4 @@
+import express from 'express';
 class ErrorHandler extends Error {
   readonly statusCode: number;
   readonly message: string;
@@ -9,7 +10,7 @@ class ErrorHandler extends Error {
   }
 }
 
-const handleError = (err, res) => {
+const handleError = (err: express.Error, res: express.Response): void => {
   const { statusCode, message } = err;
   res.status(statusCode).json({
     status: 'error',

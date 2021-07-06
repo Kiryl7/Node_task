@@ -1,5 +1,4 @@
-import { getAll, getById, delById, update, save } from './tasks.repository';
-import { Task } from './tasks.repository';
+import { getAll, getById, delById, update, save, Task } from './tasks.repository';
 
 const getTasks = async (): Promise<Array<Task> | null> => {
   try {

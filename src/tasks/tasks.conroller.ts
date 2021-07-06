@@ -1,9 +1,8 @@
 import express from 'express';
+import { buildResponse } from '../helpers/buildResponce';
+import { ErrorHandler } from '../helpers/error';
 import { validateBody } from '../helpers/validation.body';
 import { saveTask, getOneTask, delTask, updateTask, getTasks } from './tasks.service';
-import { ErrorHandler } from '../helpers/error';
-import { buildResponse } from '../helpers/buildResponce';
-import { Task } from './tasks.repository';
 
 export const tasks = express.Router();
 
