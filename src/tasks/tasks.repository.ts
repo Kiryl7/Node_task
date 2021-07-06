@@ -1,6 +1,12 @@
-const pool = require('../database')
+import { pool } from '../database'
 
-const getAll = async () => {
+export interface Task {
+    id: number;
+    title: string;
+    description: string;
+}
+
+const getAll = async (): Promise <Array<Task> | null> => {
     try {
         const queryString = 'SELECT * FROM education.task'
         const { rows } = await pool.query(queryString)
@@ -11,7 +17,7 @@ const getAll = async () => {
     }
 }
 
-const getById = async (id) => {
+const getById = async (id: number): Promise<Array<Task> | null> => {
     try {
         const queryString = `SELECT * FROM education.task WHERE ID = ${id}`
         const { rows } = await pool.query(queryString)
@@ -23,7 +29,7 @@ const getById = async (id) => {
     }
 }
 
-const delById = async (id) => {
+const delById = async (id: number): Promise<Task> => {
     const client = await pool.connect()
     let taskResult
     try {
@@ -42,7 +48,7 @@ const delById = async (id) => {
     return taskResult
 }
 
-const update = async (id, task) => {
+const update = async (id: number, task: Task): Promise<Task> => {
     const client = await pool.connect()
     const { title, description } = task
     let taskResult
@@ -62,14 +68,14 @@ const update = async (id, task) => {
     return taskResult    
     }
     
-const save = async (task) => {
+const save = async (task: Task): Promise<Task> => {
     const client = await pool.connect()
-    const {id, title, description} = task
+    const {title, description} = task
     let taskResult
     try {
         await client.query('BEGIN')
-        const query = `INSERT INTO education.task (id, title, description) VALUES ($1, $2, $3)`,
-        taskResult = await client.query(query, [id, title, description])
+        const query = `INSERT INTO education.task (title, description) VALUES ($1, $2)`,
+        taskResult = await client.query(query, [title, description])
         console.log(taskResult.rowCount)
         await client.query('COMMIT')
     } catch (error) {
@@ -82,4 +88,4 @@ const save = async (task) => {
     return taskResult
 }
 
-module.exports = { getAll, getById, delById, update, save }
+export { getAll, getById, delById, update, save }

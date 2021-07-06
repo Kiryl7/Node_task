@@ -1,12 +1,13 @@
-const express = require('express')
-const validateBody = require('../helpers/validation.body')
-const { saveTask, getOneTask, delTask, updateTask, getTasks } = require("./tasks.service")
-const { ErrorHandler } = require("../helpers/error")
-const buildResponse = require("../helpers/buildResponce")
+import express from 'express'
+import { validateBody } from '../helpers/validation.body' 
+import { saveTask, getOneTask, delTask, updateTask, getTasks } from "./tasks.service" 
+import { ErrorHandler } from "../helpers/error"  
+import { buildResponse } from "../helpers/buildResponce"  
+import { Task } from "./tasks.repository"
 
-const tasks = express.Router()
+export const tasks = express.Router()
 
-tasks.get('/:id', async (req, res) => {
+tasks.get('/:id', async (req: express.Request, res: express.Response) => {
     const id = req.params.id
     try {
         const task = await getOneTask(parseInt(id))
@@ -16,7 +17,7 @@ tasks.get('/:id', async (req, res) => {
     }
 })
 
-tasks.get('/', async (req, res) => {
+tasks.get('/', async (req: express.Request, res: express.Response) => {
     try {
         const tasks = await getTasks()
         buildResponse(tasks, res)
@@ -25,7 +26,7 @@ tasks.get('/', async (req, res) => {
     }
 })
 
-tasks.post('/', validateBody, async (req, res) => {
+tasks.post('/', validateBody, async (req: express.Request, res: express.Response) => {
     const task = req.body
     try {
         const savedTask = await saveTask(task)
@@ -35,7 +36,7 @@ tasks.post('/', validateBody, async (req, res) => {
     }  
 })
 
-tasks.delete('/:id', async (req, res) => {
+tasks.delete('/:id', async (req: express.Request, res: express.Response) => {
     try {
         const id = req.params.id
         const deletedTask = await delTask(parseInt(id))
@@ -45,7 +46,7 @@ tasks.delete('/:id', async (req, res) => {
     }
 })
 
-tasks.patch('/:id', async (req, res) => {
+tasks.patch('/:id', async (req: express.Request, res: express.Response) => {
     const id = req.params.id
     const task = req.body
     try {
@@ -56,4 +57,3 @@ tasks.patch('/:id', async (req, res) => {
     }
 })
 
-module.exports = tasks
