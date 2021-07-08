@@ -26,3 +26,4 @@ overrides:
       'max-nested-callbacks': off
   - files:
       - '*.ts'
+    
