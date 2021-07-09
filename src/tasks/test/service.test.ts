@@ -34,14 +34,14 @@ describe('task.service: getById', () => {
     expect(spyGetById).toHaveBeenCalled()
     expect(expectedTask).toEqual(mockTask)
   })
-  test('should return emptyArr instead task', async () => {
+  test('should return message when task not found', async () => {
     const mockTaskResult = []
-    const expectedMessage = 'Task with id: 2 not found'
+    const expected = 'Task with id: 2 not found'
 
     spyGetById.mockImplementation(() => Promise.resolve(mockTaskResult))
-    const expectedTask = await getOneTask(2)
+    const received = await getOneTask(2)
     expect(spyGetById).toHaveBeenCalled()
-    expect(expectedTask).toEqual(expectedMessage)
+    expect(received).toEqual(expected)
   })
   test('should return an error message after an error occur', async () => {
     const mockError = {
@@ -53,7 +53,7 @@ describe('task.service: getById', () => {
   })
 })
 
-describe('task.service: delById', () => {
+describe('task.service: delTask', () => {
   const spyDelById = jest.spyOn(tasksRepository, 'delById')
   test('should delete one task, used ID', async () => {
     const mockTask = { id: 1, title: 'element', description: 'first element' }
@@ -62,6 +62,15 @@ describe('task.service: delById', () => {
     const expectedTask = await delTask(1)
     expect(spyDelById).toHaveBeenCalled()
     expect(expectedTask).toEqual(mockTask)
+  })
+  test('should return message when task not found', async () => {
+    const mockTaskResult = {id: 100, title: 'element', description: 'magick el'}
+    const expected = `Task with id: 100 not found`
+
+    spyDelById.mockImplementation(() => Promise.resolve(mockTaskResult))
+    const received = await getOneTask(100)
+    expect(spyDelById).toHaveBeenCalled()
+    expect(received).toEqual(expected)
   })
   test('should return an error message after an error occur', async () => {
     const mockError = {
@@ -83,6 +92,15 @@ describe('task.service: update', () => {
     expect(spyUpdate).toHaveBeenCalled()
     expect(expectedTask).toEqual(mockTask)
   })
+  test('should return message when task not found', async () => {
+    const mockTaskResult = {id: 100, title: 'element', description: 'magick el'}
+    const expected = `Task with id: 100 not found`
+
+    spyUpdate.mockImplementation(() => Promise.resolve(mockTaskResult))
+    const received = await getOneTask(100)
+    expect(spyUpdate).toHaveBeenCalled()
+    expect(received).toEqual(expected)
+  })
   test('should return an error message after a error occur', async () => {
     const mockError = { message: 'Test case Error!' }
 
@@ -101,6 +119,15 @@ describe('task.service: save', () => {
     const expectedTask = await saveTask({ id: 1, title: 'element', description: 'saved el' })
     expect(spySave).toHaveBeenCalled()
     expect(expectedTask).toEqual(mockTask)
+  })
+  test('should return message when task not found', async () => {
+    const mockTaskResult = {id: 100, title: 'element', description: 'magick el'}
+    const expected = `Task with id: 100 not found`
+
+    spySave.mockImplementation(() => Promise.resolve(mockTaskResult))
+    const received = await getOneTask(100)
+    expect(spySave).toHaveBeenCalled()
+    expect(received).toEqual(expected)
   })
   test('should return an error message after a error occur', async () => {
     const mockError = { message: 'Error save test' }

@@ -32,9 +32,11 @@ const saveTask = async (task: Task): Promise<Task> => {
   }
 }
 
-const delTask = async (id: number): Promise<Task> => {
+const delTask = async (id: number): Promise<Task | string> => {//give readable name
   try {
-    return await delById(id)
+    const task = await delById(id)
+    if (!task) return `Task with id: ${id} not found`
+    return task
   } catch (error) {
     if (error) {
       return error.message
@@ -42,9 +44,11 @@ const delTask = async (id: number): Promise<Task> => {
   }
 }
 
-const updateTask = async (id: number, task: Task): Promise<Task> => {
+const updateTask = async (id: number, task: Task): Promise<Task | string> => {
   try {
-    return await update(id, task)
+    const taskUpd = await update(id, task)
+    if(!taskUpd) return `Task with id: ${id} not found`
+    return taskUpd
   } catch (error) {
     if (error) {
       return error.message
