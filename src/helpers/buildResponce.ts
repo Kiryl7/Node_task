@@ -1,9 +1,9 @@
 import express from 'express'
 import { Task } from '../tasks/tasks.repository'
 
-const buildResponse = (task: Task | Task[], res: express.Response): void => {
+const buildResponse = (result: Task | Task[] | string, res: express.Response): void => {
   res.status(200)
-  res.json(task)
+  res.json(result)
 }
 
 export { buildResponse }

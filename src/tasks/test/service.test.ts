@@ -27,12 +27,21 @@ describe('tasks.service: getTasks', () => {
 describe('task.service: getById', () => {
   const spyGetById = jest.spyOn(tasksRepository, 'getById')
   test('should return one task, used ID', async () => {
-    const mockTask = [{ id: 1, title: 'element', description: 'first element' }]
+    const mockTask = { id: 1, title: 'element', description: 'first element' }
 
-    spyGetById.mockImplementation(() => Promise.resolve(mockTask))
+    spyGetById.mockImplementation(() => Promise.resolve([mockTask]))
     const expectedTask = await getOneTask(1)
     expect(spyGetById).toHaveBeenCalled()
     expect(expectedTask).toEqual(mockTask)
+  })
+  test('should return emptyArr instead task', async () => {
+    const mockTaskResult = []
+    const expectedMessage = 'Task with id: 2 not found'
+
+    spyGetById.mockImplementation(() => Promise.resolve(mockTaskResult))
+    const expectedTask = await getOneTask(2)
+    expect(spyGetById).toHaveBeenCalled()
+    expect(expectedTask).toEqual(expectedMessage)
   })
   test('should return an error message after an error occur', async () => {
     const mockError = {

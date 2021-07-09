@@ -10,9 +10,11 @@ const getTasks = async (): Promise<Array<Task> | null> => {
   }
 }
 
-const getOneTask = async (id: number): Promise<Array<Task> | null> => {
+const getOneTask = async (id: number): Promise<Task | string> => {
   try {
-    return await getById(id)
+    const taskResult = await getById(id) 
+    if (taskResult.length === 0) return `Task with id: ${id} not found`
+    return taskResult[0] 
   } catch (error) {
     if (error) {
       return error.message
