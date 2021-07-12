@@ -1,53 +1,59 @@
-import { getAll, getById, delById, update, save, Task } from './tasks.repository';
+import { getAll, getById, delById, update, save, Task } from './tasks.repository'
 
 const getTasks = async (): Promise<Array<Task> | null> => {
   try {
-    return await getAll();
+    return await getAll()
   } catch (error) {
     if (error) {
-      return error.message;
+      return error.message
     }
   }
-};
+}
 
-const getOneTask = async (id: number): Promise<Array<Task> | null> => {
+const getOneTask = async (id: number): Promise<Task | string> => {
   try {
-    return await getById(id);
+    const taskResult = await getById(id) 
+    if (taskResult.length === 0) return `Task with id: ${id} not found`
+    return taskResult[0] 
   } catch (error) {
     if (error) {
-      return error.message;
+      return error.message
     }
   }
-};
+}
 
 const saveTask = async (task: Task): Promise<Task> => {
   try {
-    return await save(task);
+    return await save(task)
   } catch (error) {
     if (error) {
-      return error.message;
+      return error.message
     }
   }
-};
+}
 
-const delTask = async (id: number): Promise<Task> => {
+const delTask = async (id: number): Promise<Task | string> => {//give readable name
   try {
-    return await delById(id);
+    const task = await delById(id)
+    if (!task) return `Task with id: ${id} not found`
+    return task
   } catch (error) {
     if (error) {
-      return error.message;
+      return error.message
     }
   }
-};
+}
 
-const updateTask = async (id: number, task: Task): Promise<Task> => {
+const updateTask = async (id: number, task: Task): Promise<Task | string> => {
   try {
-    return await update(id, task);
+    const taskUpd = await update(id, task)
+    if(!taskUpd) return `Task with id: ${id} not found`
+    return taskUpd
   } catch (error) {
     if (error) {
-      return error.message;
+      return error.message
     }
   }
-};
+}
 
-export { getOneTask, saveTask, delTask, updateTask, getTasks };
+export { getOneTask, saveTask, delTask, updateTask, getTasks }

@@ -1,9 +1,9 @@
-import express from 'express';
-import { Task } from '../tasks/tasks.repository';
+import express from 'express'
+import { Task } from '../tasks/tasks.repository'
 
-const buildResponse = (task: Task | Task[], res: express.Response): void => {
-  res.status(200);
-  res.json(task);
-};
+const buildResponse = (result: Task | Task[] | string, res: express.Response): void => {
+  res.status(200)
+  res.json(result)
+}
 
-export { buildResponse };
+export { buildResponse }
