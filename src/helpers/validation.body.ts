@@ -3,8 +3,7 @@ import { ErrorHandler } from '../helpers/error'
 
 const validateBody = (req: express.Request, res: express.Response, next: express.NextFunction): void => {
   const task = req.body
-  if (!task.title || task.title == null || !task.description || task.description == null)
-    throw new ErrorHandler(404, 'Invalid req data')
+  if (!task.title || task.title == null || !task.description || task.description == null) throw new ErrorHandler(404, 'Invalid req data')
   next()
 }
 

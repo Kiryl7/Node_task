@@ -12,9 +12,9 @@ const getTasks = async (): Promise<Array<Task> | null> => {
 
 const getOneTask = async (id: number): Promise<Task | string> => {
   try {
-    const taskResult = await getById(id) 
+    const taskResult = await getById(id)
     if (taskResult.length === 0) return `Task with id: ${id} not found`
-    return taskResult[0] 
+    return taskResult[0]
   } catch (error) {
     if (error) {
       return error.message
@@ -32,7 +32,8 @@ const saveTask = async (task: Task): Promise<Task> => {
   }
 }
 
-const delTask = async (id: number): Promise<Task | string> => {//give readable name
+const delTask = async (id: number): Promise<Task | string> => {
+  //give readable name
   try {
     const task = await delById(id)
     if (!task) return `Task with id: ${id} not found`
@@ -47,7 +48,7 @@ const delTask = async (id: number): Promise<Task | string> => {//give readable n
 const updateTask = async (id: number, task: Task): Promise<Task | string> => {
   try {
     const taskUpd = await update(id, task)
-    if(!taskUpd) return `Task with id: ${id} not found`
+    if (!taskUpd) return `Task with id: ${id} not found`
     return taskUpd
   } catch (error) {
     if (error) {

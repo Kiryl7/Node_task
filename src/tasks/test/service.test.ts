@@ -64,7 +64,7 @@ describe('task.service: delTask', () => {
     expect(expectedTask).toEqual(mockTask)
   })
   test('should return message when task not found', async () => {
-    const mockTaskResult = {id: 100, title: 'element', description: 'magick el'}
+    const mockTaskResult = { id: 100, title: 'element', description: 'magick el' }
     const expected = `Task with id: 100 not found`
 
     spyDelById.mockImplementation(() => Promise.resolve(mockTaskResult))
@@ -93,7 +93,7 @@ describe('task.service: update', () => {
     expect(expectedTask).toEqual(mockTask)
   })
   test('should return message when task not found', async () => {
-    const mockTaskResult = {id: 100, title: 'element', description: 'magick el'}
+    const mockTaskResult = { id: 100, title: 'element', description: 'magick el' }
     const expected = `Task with id: 100 not found`
 
     spyUpdate.mockImplementation(() => Promise.resolve(mockTaskResult))
@@ -121,7 +121,7 @@ describe('task.service: save', () => {
     expect(expectedTask).toEqual(mockTask)
   })
   test('should return message when task not found', async () => {
-    const mockTaskResult = {id: 100, title: 'element', description: 'magick el'}
+    const mockTaskResult = { id: 100, title: 'element', description: 'magick el' }
     const expected = `Task with id: 100 not found`
 
     spySave.mockImplementation(() => Promise.resolve(mockTaskResult))
