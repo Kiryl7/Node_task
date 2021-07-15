@@ -34,12 +34,11 @@ const delById = async (id: number): Promise<Task> => {
   let taskResult
   try {
     await client.query('BEGIN')
-    const query = `DELETE FROM education.task WHERE id = $1`,
-      taskResult = await client.query(query, [id])
-    console.log(taskResult.rowCount) //rowCount > 0 = true
+    const query = 'DELETE FROM education.task WHERE id = $1'
+    await client.query(query, [id]) //rowCount > 0 = true
     await client.query('COMMIT')
   } catch (error) {
-    console.log(`Rolling back delete task for: ${id}, Error: ${error}`)
+    //console.log(`Rolling back delete task for: ${id}, Error: ${error}`)
     await client.query('ROLLBACK')
     throw error
   } finally {
@@ -55,8 +54,7 @@ const update = async (id: number, task: Task): Promise<Task> => {
   try {
     await client.query('BEGIN')
     const query = `UPDATE education.task SET title = $1, description = $2 WHERE ID = ${id}`
-    const taskResult = await client.query(query, [title, description])
-    console.log(taskResult.rowCount)
+    await client.query(query, [title, description])
     await client.query('COMMIT')
   } catch (error) {
     console.log(`Rolling back update task for: ${id}, ${task}, Error: ${error}`)
@@ -74,9 +72,8 @@ const save = async (task: Task): Promise<Task> => {
   let taskResult
   try {
     await client.query('BEGIN')
-    const query = `INSERT INTO education.task (title, description) VALUES ($1, $2)`,
-      taskResult = await client.query(query, [title, description])
-    console.log(taskResult.rowCount)
+    const query = `INSERT INTO education.task (title, description) VALUES ($1, $2)`
+    await client.query(query, [title, description])
     await client.query('COMMIT')
   } catch (error) {
     console.log(`Rolling back saveObj task for: ${task}, Error: ${error}`)
