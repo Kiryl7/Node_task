@@ -49,17 +49,7 @@ describe('repository methods', () => {
     expect(client.query).toHaveBeenCalledWith('COMMIT') //toHaveBeenCalledWith(param 'BEGIN',)
     expect(client.release).toBeCalled()
   })
-  // test('should return message when task not found', async () => {
-  //   const client = await pool.connect()
-  //   //const mockError = { message: 'test case error' }
-  //   // client.query.mockResolvedValueOnce('true')
-  //   // client.query.mockRejectedValueOnce(mockError)
-  //   when(client.query).calledWith('DELETE FROM education.task WHERE id = $1', [1]).mockRejectedValueOnce(new Error())
-  //   await delById(1)
-  //   // expect(client.query).toHaveBeenCalledWith('BEGIN')
-  //   // expect(client.query).toHaveBeenCalledWith('ROLLBACK')
-  //   expect(client.release).toBeCalled()
-  // })
+
   test('update', async () => {
     const client = await pool.connect()
     client.query.mockResolvedValueOnce({ rows: [], rowCount: 0 })
