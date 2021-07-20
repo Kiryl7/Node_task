@@ -1,6 +1,6 @@
 import express from 'express'
 import { ErrorHandler, handleError } from './helpers/error'
-import { tasks as taskRoute } from './tasks/tasks.conroller'
+import { tasks as taskRoute } from './tasks/tasks.controller'
 
 export const app = express()
 app.use(express.json())

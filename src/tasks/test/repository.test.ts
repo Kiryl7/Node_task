@@ -42,11 +42,11 @@ describe('repository methods', () => {
   })
   test('delByID', async () => {
     const client = await pool.connect()
-    client.query.mockResolvedValueOnce({ rows: [], rowCount: 0 }) //fix pool.query to pool.client
+    client.query.mockResolvedValueOnce({ rows: [], rowCount: 0 })
     await delById(1)
     expect(client.query).toHaveBeenCalledWith('BEGIN')
     expect(client.query).toHaveBeenCalledWith('DELETE FROM education.task WHERE id = $1', [1])
-    expect(client.query).toHaveBeenCalledWith('COMMIT') //toHaveBeenCalledWith(param 'BEGIN',)
+    expect(client.query).toHaveBeenCalledWith('COMMIT')
     expect(client.release).toBeCalled()
   })
 

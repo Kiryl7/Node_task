@@ -33,7 +33,6 @@ const saveTask = async (task: Task): Promise<Task> => {
 }
 
 const delTask = async (id: number): Promise<Task | string> => {
-  //give readable name
   try {
     const task = await delById(id)
     if (!task) return `Task with id: ${id} not found`

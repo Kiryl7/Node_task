@@ -8,9 +8,11 @@ export const tasks = express.Router()
 
 tasks.get('/:id', async (req: express.Request, res: express.Response) => {
   const id = req.params.id
+  const task = await getOneTask(parseInt(id))
   try {
-    const task = await getOneTask(parseInt(id))
-    buildResponse(task, res)
+    if (typeof task == 'object') {
+      buildResponse(task, res)
+    } else res.status(404).send()
   } catch (error) {
     throw new ErrorHandler(404, 'Task not found')
   }
@@ -20,7 +22,7 @@ tasks.get('/', async (req: express.Request, res: express.Response) => {
   try {
     const tasks = await getTasks()
     buildResponse(tasks, res)
-  } catch (error11) {
+  } catch (error) {
     throw new ErrorHandler(404, 'Tasks not found.')
   }
 })
