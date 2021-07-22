@@ -1,4 +1,5 @@
 import { pool } from '../database'
+import { getOneTask } from './tasks.service'
 
 export interface Task {
   id: number
@@ -21,7 +22,6 @@ const getById = async (id: number): Promise<Array<Task> | null> => {
   try {
     const queryString = `SELECT * FROM education.task WHERE ID = ${id}`
     const { rows } = await pool.query(queryString)
-    console.log(rows)
     return rows
   } catch (error) {
     console.log(error)
@@ -29,9 +29,8 @@ const getById = async (id: number): Promise<Array<Task> | null> => {
   }
 }
 
-const delById = async (id: number): Promise<Task> => {
+const delById = async (id: number): Promise<number> => {
   const client = await pool.connect()
-  let taskResult
   try {
     await client.query('BEGIN')
     const query = 'DELETE FROM education.task WHERE id = $1'
@@ -44,7 +43,7 @@ const delById = async (id: number): Promise<Task> => {
   } finally {
     client.release()
   }
-  return taskResult
+  return id
 }
 
 const update = async (id: number, task: Task): Promise<Task> => {
@@ -57,7 +56,7 @@ const update = async (id: number, task: Task): Promise<Task> => {
     await client.query(query, [title, description])
     await client.query('COMMIT')
   } catch (error) {
-    console.log(`Rolling back update task for: ${id}, ${task}, Error: ${error}`)
+    //console.log(`Rolling back update task for: ${id}, ${task}, Error: ${error}`)
     await client.query('ROLLBACK')
     throw error
   } finally {
@@ -69,20 +68,19 @@ const update = async (id: number, task: Task): Promise<Task> => {
 const save = async (task: Task): Promise<Task> => {
   const client = await pool.connect()
   const { title, description } = task
-  let taskResult
   try {
     await client.query('BEGIN')
     const query = `INSERT INTO education.task (title, description) VALUES ($1, $2)`
     await client.query(query, [title, description])
     await client.query('COMMIT')
   } catch (error) {
-    console.log(`Rolling back saveObj task for: ${task}, Error: ${error}`)
+    //console.log(`Rolling back saveObj task for: ${task}, Error: ${error}`)
     await client.query('ROLLBACK')
     throw error
   } finally {
     client.release()
   }
-  return taskResult
+  return task
 }
 
 export { getAll, getById, delById, update, save }

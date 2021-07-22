@@ -10,7 +10,7 @@ tasks.get('/:id', async (req: express.Request, res: express.Response) => {
   const id = req.params.id
   const task = await getOneTask(parseInt(id))
   try {
-    if (typeof task == 'object') {
+    if (typeof task === 'object') {
       buildResponse(task, res)
     } else res.status(404).send()
   } catch (error) {
@@ -29,9 +29,10 @@ tasks.get('/', async (req: express.Request, res: express.Response) => {
 
 tasks.post('/', validateBody, async (req: express.Request, res: express.Response) => {
   const task = req.body
+  const savedTask = await saveTask(task)
   try {
-    const savedTask = await saveTask(task)
-    buildResponse(savedTask, res)
+    if (Object.keys(task).length > 2) res.status(404).send()
+    else buildResponse(savedTask, res)
   } catch (error) {
     throw new ErrorHandler(404, "Task does't save(")
   }
@@ -41,7 +42,8 @@ tasks.delete('/:id', async (req: express.Request, res: express.Response) => {
   try {
     const id = req.params.id
     const deletedTask = await delTask(parseInt(id))
-    buildResponse(deletedTask, res)
+    if(typeof(deletedTask === 'string')) res.status(404).send()
+      else buildResponse(deletedTask, res)
   } catch (error) {
     throw new ErrorHandler(404, 'This object cannot been deleted.')
   }

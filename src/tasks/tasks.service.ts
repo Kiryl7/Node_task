@@ -32,10 +32,11 @@ const saveTask = async (task: Task): Promise<Task> => {
   }
 }
 
-const delTask = async (id: number): Promise<Task | string> => {
+const delTask = async (id: number): Promise<string | number> => {
   try {
+    const validTask = getById(id)
     const task = await delById(id)
-    if (!task) return `Task with id: ${id} not found`
+    if (!task && !validTask) return `Task with id: ${id} not found`
     return task
   } catch (error) {
     if (error) {
