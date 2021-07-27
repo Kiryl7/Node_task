@@ -1,59 +1,54 @@
+import { ErrorHandler } from '../helpers/error'
 import { getAll, getById, delById, update, save, Task } from './tasks.repository'
 
 const getTasks = async (): Promise<Array<Task> | null> => {
   try {
-    return await getAll()
+    const tasks = await getAll()
+    if(!tasks) throw new Error
+    return tasks
   } catch (error) {
-    if (error) {
-      return error.message
-    }
+      return error
   }
 }
 
 const getOneTask = async (id: number): Promise<Task | string> => {
   try {
     const taskResult = await getById(id)
-    if (taskResult.length === 0) return `Task with id: ${id} not found`
+    if (taskResult.length === 0) throw new Error
     return taskResult[0]
   } catch (error) {
-    if (error) {
-      return error.message
-    }
+    return error
   }
 }
 
 const saveTask = async (task: Task): Promise<Task> => {
   try {
-    return await save(task)
+    const savedTask = await save(task)
+    if(Object.keys(savedTask).length > 3) throw new Error
+    return savedTask
   } catch (error) {
-    if (error) {
-      return error.message
-    }
+      return error
   }
 }
 
-const delTask = async (id: number): Promise<string | number> => {
+const delTask = async (id: number): Promise<number> => {
   try {
-    const validTask = getById(id)
     const task = await delById(id)
-    if (!task && !validTask) return `Task with id: ${id} not found`
+    if (task <= 0) throw new Error
     return task
   } catch (error) {
-    if (error) {
-      return error.message
-    }
+      return error
   }
 }
 
 const updateTask = async (id: number, task: Task): Promise<Task | string> => {
   try {
     const taskUpd = await update(id, task)
-    if (!taskUpd) return `Task with id: ${id} not found`
+    if (!taskUpd) throw new Error
     return taskUpd
   } catch (error) {
-    if (error) {
-      return error.message
-    }
+    console.log(`Task with id: ${id} not found`)
+      return error
   }
 }
 

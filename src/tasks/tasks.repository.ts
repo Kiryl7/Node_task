@@ -1,5 +1,4 @@
 import { pool } from '../database'
-import { getOneTask } from './tasks.service'
 
 export interface Task {
   id: number
@@ -31,10 +30,11 @@ const getById = async (id: number): Promise<Array<Task> | null> => {
 
 const delById = async (id: number): Promise<number> => {
   const client = await pool.connect()
+  let result
   try {
     await client.query('BEGIN')
     const query = 'DELETE FROM education.task WHERE id = $1'
-    await client.query(query, [id]) //rowCount > 0 = true
+    result = await client.query(query, [id]) //rowCount > 0 = true
     await client.query('COMMIT')
   } catch (error) {
     //console.log(`Rolling back delete task for: ${id}, Error: ${error}`)
@@ -43,13 +43,12 @@ const delById = async (id: number): Promise<number> => {
   } finally {
     client.release()
   }
-  return id
+  return result.rowCount
 }
 
 const update = async (id: number, task: Task): Promise<Task> => {
   const client = await pool.connect()
   const { title, description } = task
-  let taskResult
   try {
     await client.query('BEGIN')
     const query = `UPDATE education.task SET title = $1, description = $2 WHERE ID = ${id}`
@@ -62,7 +61,7 @@ const update = async (id: number, task: Task): Promise<Task> => {
   } finally {
     client.release()
   }
-  return taskResult
+  return task
 }
 
 const save = async (task: Task): Promise<Task> => {

@@ -1,6 +1,5 @@
 import express from 'express'
 import { buildResponse } from '../helpers/buildResponce'
-import { ErrorHandler } from '../helpers/error'
 import { validateBody } from '../helpers/validation.body'
 import { saveTask, getOneTask, delTask, updateTask, getTasks } from './tasks.service'
 
@@ -10,11 +9,10 @@ tasks.get('/:id', async (req: express.Request, res: express.Response) => {
   const id = req.params.id
   const task = await getOneTask(parseInt(id))
   try {
-    if (typeof task === 'object') {
+    if(Object.keys(task).length === 0) throw new Error
       buildResponse(task, res)
-    } else res.status(404).send()
   } catch (error) {
-    throw new ErrorHandler(404, 'Task not found')
+    res.status(404).send('Task not found.')
   }
 })
 
@@ -23,18 +21,18 @@ tasks.get('/', async (req: express.Request, res: express.Response) => {
     const tasks = await getTasks()
     buildResponse(tasks, res)
   } catch (error) {
-    throw new ErrorHandler(404, 'Tasks not found.')
+    res.status(404).send('Tasks not found.')
   }
 })
 
 tasks.post('/', validateBody, async (req: express.Request, res: express.Response) => {
-  const task = req.body
-  const savedTask = await saveTask(task)
   try {
-    if (Object.keys(task).length > 2) res.status(404).send()
+    const task = req.body
+    const savedTask = await saveTask(task)
+    if (Object.keys(task).length > 2) throw new Error
     else buildResponse(savedTask, res)
   } catch (error) {
-    throw new ErrorHandler(404, "Task does't save(")
+    res.status(404).send("Task doesn't save. Your request has invalid data.")
   }
 })
 
@@ -42,20 +40,21 @@ tasks.delete('/:id', async (req: express.Request, res: express.Response) => {
   try {
     const id = req.params.id
     const deletedTask = await delTask(parseInt(id))
-    if(typeof(deletedTask === 'string')) res.status(404).send()
-      else buildResponse(deletedTask, res)
+    if (typeof(deletedTask) !== 'number') throw new Error
+    buildResponse(`Object with id: ${id} has been deleted.`, res)
   } catch (error) {
-    throw new ErrorHandler(404, 'This object cannot been deleted.')
+    res.status(404).send('This object cannot been deleted.')  
   }
 })
 
 tasks.patch('/:id', async (req: express.Request, res: express.Response) => {
-  const id = req.params.id
-  const task = req.body
   try {
+    const id = req.params.id
+    const task = req.body
+    if (Object.keys(task).length > 2) throw new Error
     const updatedTask = await updateTask(parseInt(id), task)
     buildResponse(updatedTask, res)
   } catch (error) {
-    throw new ErrorHandler(404, 'Task can not be updated')
+    res.status(404).send('This object cannot be updated. You send invalid data.')
   }
 })
