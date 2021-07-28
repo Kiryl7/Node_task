@@ -25,6 +25,9 @@ describe('repository methods', () => {
   })
   const mockTasks = []
   describe('getAll', () => {
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
     test('should return arr', async () => {
       pool.query.mockResolvedValue({ rowCount: 0, rows: [] })
       const expected = await getAll()
@@ -33,6 +36,9 @@ describe('repository methods', () => {
     })
   })
   describe('getByID', () => {
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
     test('should return one task', async () => {
       pool.query.mockResolvedValue({ rowCountL: 0, rows: [] })
       const expected = await getById(1)
@@ -42,7 +48,7 @@ describe('repository methods', () => {
   })
   test('delByID', async () => {
     const client = await pool.connect()
-    client.query.mockResolvedValueOnce({ rows: [], rowCount: 0 })
+    client.query.mockResolvedValue({ rows: [], rowCount: 1 })
     await delById(1)
     expect(client.query).toHaveBeenCalledWith('BEGIN')
     expect(client.query).toHaveBeenCalledWith('DELETE FROM education.task WHERE id = $1', [1])

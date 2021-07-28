@@ -35,6 +35,7 @@ const delById = async (id: number): Promise<number> => {
     await client.query('BEGIN')
     const query = 'DELETE FROM education.task WHERE id = $1'
     result = await client.query(query, [id]) //rowCount > 0 = true
+    console.log(result)
     await client.query('COMMIT')
   } catch (error) {
     //console.log(`Rolling back delete task for: ${id}, Error: ${error}`)

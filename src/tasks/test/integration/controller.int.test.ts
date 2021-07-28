@@ -43,13 +43,15 @@ describe('PATCH', () => {
     expect(res.body.description).toBe(updateTask.description)
   })
   it('PATCH update non-valid data', async () => {
-    const responce = await request(app).patch(endPointUrl + 54).send(nonValidTask)
+    const responce = await request(app)
+      .patch(endPointUrl + 54)
+      .send(nonValidTask)
     expect(responce.statusCode).toBe(404)
   })
 })
 describe('HTTP DELETE', () => {
   it('DELETE should return status code: 200', async () => {
-    const tempID = 159
+    const tempID = 161
     const beforeRes = await request(app).get(endPointUrl + tempID)
     expect(beforeRes.statusCode).toBe(200)
     const res = await request(app).delete(endPointUrl + tempID)
@@ -62,4 +64,3 @@ describe('HTTP DELETE', () => {
     expect(res.statusCode).toBe(404)
   })
 })
-
